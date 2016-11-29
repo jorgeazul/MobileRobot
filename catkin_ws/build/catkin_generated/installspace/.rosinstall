@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/jorge/MobileRobot/catkin_ws/install/setup.sh
