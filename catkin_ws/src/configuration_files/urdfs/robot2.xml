@@ -1,0 +1,160 @@
+<?xml version="1.0"?>
+	<robot name="Robot1">
+
+	<material name="white">
+		<color rgba="1 1 1 1"/>
+	</material>
+	
+	<material name="black">
+		<color rgba="0 0 0 1"/>
+	</material>
+
+	<material name="blue">
+		<color rgba="0 0 1 1"/>
+	</material>
+
+	<material name="orange">
+		<color rgba="1.0 0.5 0 1"/>
+	</material>
+
+	<material name="red">
+		<color rgba="0.8 0 0 1"/>
+	</material>
+
+		<link name="base_link">
+			<!-- Centro -->
+			<visual>
+				<geometry>
+					<box size="0.07 0.145 0.04"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="0 0 0.081"/>
+			        <material name="orange"/>
+			</visual>
+			<!-- Atras -->
+			<visual>
+				<geometry>
+					<box size="0.07 0.12 0.05"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="-0.075 0 0.076"/>
+			        <material name="orange"/>
+			</visual>
+			<!-- Frontal -->
+			<visual>
+				<geometry>
+					<box size="0.07 0.12 0.05"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="0.075 0 0.076"/>
+			        <material name="orange"/>
+			</visual>
+			<!-- Espaciador frontal -->
+			<visual>
+				<geometry>
+					<box size="0.005 0.05 0.03"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="0.0375 0 0.081"/>
+			        <material name="orange"/>
+			</visual>
+			<!-- Espaciador atras -->
+			<visual>
+				<geometry>
+					<box size="0.005 0.05 0.03"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="-0.0375 0 0.081"/>
+			        <material name="orange"/>
+			</visual>
+			<!-- Toldo -->
+			<visual>
+				<geometry>
+					<box size="0.234 0.12 0.026"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="0 0 0.122"/>
+			        <material name="orange"/>
+			</visual>
+		</link>
+
+		<!-- Llanta Frontal Derecha -->
+		<link name="wheel_1">
+			<visual>
+				<geometry>
+					<cylinder length="0.0605" radius="0.0625"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<material name="red"/>
+			</visual>
+		</link>
+
+		<joint name="base_to_wheel1" type="fixed">
+			<parent link="base_link"/>
+			<child link="wheel_1"/>
+			<origin xyz="0.075 -0.115 0.0625" rpy="1.5708 0 0"/>
+		</joint>
+
+		<!-- Llanta Frontal Izquierda -->
+		<link name="wheel_2">
+			<visual>
+				<geometry>
+					<cylinder length="0.0605" radius="0.0625"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<material name="red"/>
+			</visual>
+		</link>
+
+		<joint name="base_to_wheel2" type="fixed">
+			<parent link="base_link"/>
+			<child link="wheel_2"/>
+			<origin xyz="0.075 0.115 0.0625" rpy="0 -1.5708 -1.5708"/>
+		</joint>
+
+		<!-- Llanta Atras Derecha -->
+		<link name="wheel_3">
+			<visual>
+				<geometry>
+					<cylinder length="0.0605" radius="0.0625"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<material name="red"/>
+			</visual>
+		</link>
+
+		<joint name="base_to_wheel3" type="fixed">
+			<parent link="base_link"/>
+			<child link="wheel_3"/>
+			<origin xyz="-0.075 -0.115 0.0625" rpy="1.5708 0 0"/>
+		</joint>
+
+		<!-- Llanta Atras Izquierda -->
+		<link name="wheel_4">
+			<visual>
+				<geometry>
+					<cylinder length="0.0605" radius="0.0625"/>
+				</geometry>
+				<origin rpy="0 0 0" xyz="0 0 0"/>
+				<material name="red"/>
+			</visual>
+		</link>
+
+		<joint name="base_to_wheel4" type="fixed">
+			<parent link="base_link"/>
+			<child link="wheel_4"/>
+			<origin  xyz="-0.075 0.115 0.0625" rpy="0 -1.5708 -1.5708"/>
+		</joint>
+
+		<!-- Laser -->
+		<link name="laser_link">
+			<visual>
+				<geometry>
+					<box size="0.045 0.05 0.08"/>
+				</geometry>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<material name="blue"/>
+			</visual>
+		</link>
+
+		<joint name="laser_connect" type="fixed">
+			<parent link="base_link"/>
+			<child link="laser_link"/>
+			<origin xyz="0.075 0 0.175"/>
+		</joint>
+
+	</robot>

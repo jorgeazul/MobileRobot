@@ -1,0 +1,8 @@
+prefix=/home/jorge/MobileRobot/catkin_ws/devel
+
+Name: path_calculator
+Description: Description of path_calculator
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/jorge/MobileRobot/catkin_ws/devel/lib 
+Requires: 

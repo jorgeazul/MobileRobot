@@ -1,0 +1,22 @@
+<launch>
+    <remap from="/hardware/mobile_base/odometry" to="/navigation/localization/base_pose_ground_truth"/>
+    <remap from="/navigation/localization/amcl_pose" to="/navigation/localization/current_pose"/>
+    <param name="robot_description" command="cat $(find configuration_files)/urdfs/robot1.xml" />
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+    <node name="gmapping_link_publisher" pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 map odom 30"/>
+    <group ns="hardware">
+           <node name="mobile_base" pkg="mobile_base" type="mobile_base_node.py" output="screen" args="--simul"/>
+           <node name="joy" pkg="joy" type="joy_node" output="screen"/>
+    </group>
+
+	<group ns="operation">
+	       <node name="joystick_operation" pkg="joystick_operation" type="joystick_operation_node.py" output="screen" />
+	</group>
+    <group ns="navigation">
+           <node name="map_server" pkg="map_server" type="map_server" output="screen" 
+                 args="$(find configuration_files)/occupancy_grids/biorobotics_lab.yaml"/>
+    </group>
+
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+    <node name="tf2_web_republisher" pkg="tf2_web_republisher" type="tf2_web_republisher"/>
+</launch>

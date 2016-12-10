@@ -1,2 +1,2 @@
-bring_up:configuration_files:hardware/mobile_base
+bring_up:configuration_files:hardware/laser_simulator:hardware/mobile_base:locations/location_markers:navigation/navig_msgs:navigation/path_calculator:navigation/pot_fields:operation/joystick_operation:tools/occupancy_grid_utils
 -DCATKIN_DEVEL_PREFIX=/home/jorge/MobileRobot/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/jorge/MobileRobot/catkin_ws/install -G Unix Makefiles
