@@ -21,8 +21,8 @@ int main(int argc, char **argv)
   marker.header.frame_id = "map";
   //marker.header.stamp = ros::Time::now();
   marker.ns = "locations";
-  //marker.type = visualization_msgs::Marker::POINTS;
-  marker.type = visualization_msgs::Marker::SPHERE_LIST;
+  marker.type = visualization_msgs::Marker::POINTS;
+  //marker.type = visualization_msgs::Marker::SPHERE_LIST;
   marker.action = visualization_msgs::Marker::ADD;
 
 

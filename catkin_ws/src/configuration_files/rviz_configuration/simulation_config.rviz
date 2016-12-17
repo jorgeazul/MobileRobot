@@ -9,6 +9,8 @@ Panels:
         - /Grid1
         - /Marker1
         - /LaserScan1
+        - /Path1
+        - /Path2
       Splitter Ratio: 0.5
     Tree Height: 495
   - Class: rviz/Selection
@@ -185,6 +187,36 @@ Visualization Manager:
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 220; 69; 69
+      Enabled: true
+      Line Style: Lines
+      Line Width: 0.03
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Topic: /navigation/a_star_path
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 25; 255; 0
+      Enabled: true
+      Line Style: Lines
+      Line Width: 0.03
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Topic: /navigation/original_path
+      Unreliable: false
       Value: true
   Enabled: true
   Global Options:

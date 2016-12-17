@@ -21,8 +21,8 @@ int main(int argc, char **argv)
   marker.header.frame_id = "map";
   //marker.header.stamp = ros::Time::now();
   marker.ns = "locations";
-  //marker.type = visualization_msgs::Marker::POINTS;
-  marker.type = visualization_msgs::Marker::SPHERE_LIST;
+  marker.type = visualization_msgs::Marker::POINTS;
+  //marker.type = visualization_msgs::Marker::SPHERE_LIST;
   marker.action = visualization_msgs::Marker::ADD;
 
 
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 
   //int rows =  sizeof simul_locations / sizeof simul_locations[0]; // 2 rows
   int cols = sizeof simul_locations[0] / sizeof(float); // 7 cols
-  point.z = 0.0;
+  point.z = 0.035;//0.095
 
   for(int i=0 ; i < cols ; i++)
   {

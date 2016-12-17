@@ -12,6 +12,7 @@
 	<group ns="hri">
 	       <node name="rviz" pkg="rviz" type="rviz" 
 		args="-d $(find configuration_files)/rviz_configuration/simulation_config.rviz"/>
+           <node name="justina_gui" pkg="justina_simple_gui" type="justina_simple_gui_node"/>
 	</group>
 	<group ns="operation">
 	       <node name="joystick_operation" pkg="joystick_operation" type="joystick_operation_node.py" output="screen" />

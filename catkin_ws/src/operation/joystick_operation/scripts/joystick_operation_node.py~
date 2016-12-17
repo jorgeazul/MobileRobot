@@ -31,7 +31,7 @@ def main():
     global rightSpeed
     global b_Button
     
-    print "INITIALIZING JOYSTICK TELEOP for JustinaNL BY MARCOSOFT..."
+    print "Initializing joystick operation node..."
     rospy.init_node("joystick_operation")
     
     rospy.Subscriber("/hardware/joy", Joy, callbackJoy)

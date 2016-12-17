@@ -5,10 +5,10 @@
 //limits.h
 
 nav_msgs::Path global_path;
+nav_msgs::Path original_path;
 //nav_msgs::OccupancyGrid temp;
 
-nav_msgs::OccupancyGrid grow_obs(nav_msgs::OccupancyGrid& map,
-                                 int k)
+nav_msgs::OccupancyGrid grow_obs(nav_msgs::OccupancyGrid& map, int k)
 {
     nav_msgs::OccupancyGrid temp;
     for(int j=0; j<k; j++)
@@ -33,8 +33,7 @@ nav_msgs::OccupancyGrid grow_obs(nav_msgs::OccupancyGrid& map,
     return map;
 }
 
-bool a_star(float startX, float startY, float goalX,
-            float goalY, nav_msgs::OccupancyGrid& map,
+bool a_star(float startX, float startY, float goalX, float goalY, nav_msgs::OccupancyGrid& map,
             nav_msgs::Path& optimal_path)
 {
     
@@ -69,8 +68,20 @@ bool a_star(float startX, float startY, float goalX,
     int goalCellY =  (int)( (goalY - map.info.origin.position.y)/map.info.resolution );
     int goalCell = goalCellY * map.info.width + goalCellX;
 
-    std::cout << "Start X: "  << currentCellX << "      Start Y: "  << currentCellY << std::endl;
-    std::cout << "Goal X: "  << goalCellX << "      Goal Y: "  << goalCellY << std::endl;
+    if(map.data[currentCell]>50)
+    {
+      std::cout << "ERROR: La posicion inicial esta dentro de espacio ocupado" << std::endl;
+      return false;
+    }
+
+    if(map.data[goalCell]>50)
+    {
+      std::cout << "ERROR: La posicion final esta dentro de espacio ocupado" << std::endl;
+      return false;
+    }
+
+    //std::cout << "Start X: "  << currentCellX << "      Start Y: "  << currentCellY << std::endl;
+    //std::cout << "Goal X: "  << goalCellX << "      Goal Y: "  << goalCellY << std::endl;
     std::cout << "width: "  << map.info.width << "      height: "  << map.info.height << "      Size: "  << map.data.size()  << "      Resolution: "  << map.info.resolution  << std::endl;
     std::cout << "Origen X: "  << map.info.origin.position.x << "      Origen Y: "  << map.info.origin.position.y << std::endl;
     std::cout << "currentCell: " << currentCell << "      goalCell: " << goalCell << std::endl; 
@@ -134,6 +145,7 @@ bool a_star(float startX, float startY, float goalX,
     while(currentCell != -1)
     {
       geometry_msgs::PoseStamped p;
+      //p.header.frame_id = "map";//Referenciar las poses al frame map
       p.pose.position.x = (currentCell % map.info.width) * map.info.resolution + map.info.origin.position.x;
       p.pose.position.y = (currentCell / map.info.width) * map.info.resolution + map.info.origin.position.y;
       optimal_path.poses.insert(optimal_path.poses.begin(), p);
@@ -148,15 +160,15 @@ bool a_star(float startX, float startY, float goalX,
     return true;
 }
 
-nav_msgs::Path smooth_path(nav_msgs::Path& path, float alpha,
-                           float beta)
+nav_msgs::Path smooth_path(nav_msgs::Path& path, float alpha, float beta)
 {
-    float tol = 0.0001;
+    float tol = 0.00001;
+    tol *= path.poses.size();
     //float tol = 0.001 * path.poses.size();
     float error = tol + 1;
     //gradiente de dimension del numero de puntos
     nav_msgs::Path smoothPath = path;
-    int attempts = 10000;
+    int attempts = 10000;//10000
     while(error > tol && --attempts>0)
     {
       error = 0;
@@ -165,37 +177,37 @@ nav_msgs::Path smooth_path(nav_msgs::Path& path, float alpha,
       {
         float lastx = smoothPath.poses[i].pose.position.x;
         float lasty = smoothPath.poses[i].pose.position.y;
-        smoothPath.poses[i].pose.position.x -= alpha * (lastx - path.poses[i].pose.position.x) + beta * (2*lastx - smoothPath.poses[i-1].pose.position.x -smoothPath.poses[i+1].pose.position.x);
-        smoothPath.poses[i].pose.position.y -= alpha * (lasty - path.poses[i].pose.position.y) + beta * (2*lasty - smoothPath.poses[i-1].pose.position.y -smoothPath.poses[i+1].pose.position.y);
+        smoothPath.poses[i].pose.position.x -= alpha * (lastx - path.poses[i].pose.position.x) + beta * (2*lastx - smoothPath.poses[i-1].pose.position.x - smoothPath.poses[i+1].pose.position.x);
+
+        smoothPath.poses[i].pose.position.y -= alpha * (lasty - path.poses[i].pose.position.y) + beta * (2*lasty - smoothPath.poses[i-1].pose.position.y - smoothPath.poses[i+1].pose.position.y);
         //el error es la magnitud del gradiente
         //p pertenece a R^(2n),n=numero de puntos,       P-=p- + gradiente fabs()
-        error += abs(smoothPath.poses[i].pose.position.x - lastx) + abs(smoothPath.poses[i].pose.position.y - lasty);
+        error += fabs(smoothPath.poses[i].pose.position.x - lastx) + fabs(smoothPath.poses[i].pose.position.y - lasty);
       }
     }
     return smoothPath;
     //return path;
 }
 
-bool callback_a_star(navig_msgs::CalculatePath::Request& req,
-                     navig_msgs::CalculatePath::Response& res)
+bool callback_a_star(navig_msgs::CalculatePath::Request& req, navig_msgs::CalculatePath::Response& res)
 {
-    std::cout << "StartPose: " << req.start_pose.position.x <<
-        "  " << req.start_pose.position.y << std::endl;
+    std::cout << "StartPose: " << req.start_pose.position.x << "  " << req.start_pose.position.y << std::endl;
 
     req.map = grow_obs(req.map, 6);
 
     nav_msgs::Path path;
-    if(!a_star(req.start_pose.position.x,
-               req.start_pose.position.y,
-               req.goal_pose.position.x,
-               req.goal_pose.position.y, req.map, path))
+    if(!a_star(req.start_pose.position.x, req.start_pose.position.y,
+               req.goal_pose.position.x, req.goal_pose.position.y, req.map, path))
     {
         std::cout << "Cannot calculate A* :'(" << std::endl;
         return false;
     }
     std::cout << "A* calculated succesfully... " << std::endl;
-    res.path = path;
-    //res.path = smooth_path(path, 5, 1);
+    //res.path = path;
+    original_path = path;
+    std::cout << "Suavizando path... " << std::endl;
+    //weight of data=0.2, weight of smooth=0.8
+    res.path = smooth_path(path, 0.15, 0.85);
     global_path = res.path;
     return true;
 }
@@ -205,14 +217,14 @@ int main(int argc, char** argv)
     std::cout << "Init path calculator..." << std::endl;
     ros::init(argc, argv, "path_calculator");
     ros::NodeHandle n;
-    ros::ServiceServer srv = n.advertiseService(
-        "/navigation/a_star", callback_a_star);
-    ros::Publisher pubPath = n.advertise<nav_msgs::Path>(
-        "/navigation/a_star_path", 1);
+    ros::ServiceServer srv = n.advertiseService("/navigation/a_star", callback_a_star);
+    ros::Publisher pubPath = n.advertise<nav_msgs::Path>("/navigation/a_star_path", 1);
+    ros::Publisher pubPathOriginal = n.advertise<nav_msgs::Path>("/navigation/original_path", 1);
     ros::Rate loop(10);
     while(ros::ok())
     {
         pubPath.publish(global_path);
+	pubPathOriginal.publish(original_path);
         ros::spinOnce();
         loop.sleep();
     }
