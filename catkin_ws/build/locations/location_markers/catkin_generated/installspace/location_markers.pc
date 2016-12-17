@@ -1,8 +1,0 @@
-prefix=/home/jorge/MobileRobot/catkin_ws/install
-
-Name: location_markers
-Description: Description of location_markers
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/jorge/MobileRobot/catkin_ws/install/lib 
-Requires: 

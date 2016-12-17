@@ -1,8 +1,0 @@
-prefix=/home/jorge/MobileRobot/catkin_ws/devel
-
-Name: pot_fields
-Description: Description of pot_fields
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/jorge/MobileRobot/catkin_ws/devel/lib 
-Requires: 

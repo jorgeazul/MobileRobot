@@ -1,8 +1,0 @@
-prefix=/home/jorge/MobileRobot/catkin_ws/devel
-
-Name: configuration_files
-Description: Description of configuration_files
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/jorge/MobileRobot/catkin_ws/devel/lib 
-Requires: 

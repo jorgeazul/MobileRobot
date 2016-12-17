@@ -1,8 +1,0 @@
-prefix=/home/jorge/MobileRobot/catkin_ws/devel
-
-Name: joystick_operation
-Description: Description of joystick_operation
-Version: 0.0.0
-Cflags: 
-Libs: -L/home/jorge/MobileRobot/catkin_ws/devel/lib 
-Requires: 

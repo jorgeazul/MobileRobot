@@ -1,8 +1,0 @@
-prefix=/home/jorge/MobileRobot/catkin_ws/install
-
-Name: navig_msgs
-Description: Description of navig_msgs
-Version: 0.0.0
-Cflags: -I/home/jorge/MobileRobot/catkin_ws/install/include
-Libs: -L/home/jorge/MobileRobot/catkin_ws/install/lib 
-Requires: 
